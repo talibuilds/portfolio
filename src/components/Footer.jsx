@@ -202,7 +202,7 @@ const Footer = () => {
             { icon: <FaGithub size={20} />, link: 'https://github.com/talibuilds' },
             { icon: <Mail size={20} />, link: 'mailto:talibslab@gmail.com' },
             { icon: <FaLinkedin size={20} />, link: 'https://www.linkedin.com/in/m-talib-khan/' },
-            { icon: <FaInstagram size={20} />, link: 'https://www.instagram.com/talibk.ai' }
+            { icon: <FaInstagram size={20} />, link: 'https://www.instagram.com/talib.waves' }
           ].map((item, index) => (
             <a 
               key={index} 
