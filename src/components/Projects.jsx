@@ -21,7 +21,7 @@ const projectsList = [
   },
   {
     name: 'Planetto',
-    description: 'Planetto is a Student Productivity app which will help the users to Achieve their goals within their estimated timeline.',
+    description: 'A mobile app Built for students who dont just set goals — they complete them.',
     language: 'React Native',
     link: 'https://github.com/talibuilds/Planetto',
     tags: ['React Native', 'Mobile', 'Productivity']
