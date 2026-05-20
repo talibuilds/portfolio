@@ -14,7 +14,7 @@ const Footer = () => {
     const data = Object.fromEntries(formData.entries());
     
     try {
-      const response = await fetch("https://formsubmit.co/ajax/talibslab@gmail.com", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
