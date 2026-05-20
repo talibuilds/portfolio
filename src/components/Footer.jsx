@@ -11,14 +11,16 @@ const Footer = () => {
     setStatus('submitting');
     
     const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
     
     try {
       const response = await fetch("https://formsubmit.co/ajax/talibslab@gmail.com", {
         method: "POST",
-        body: formData,
         headers: {
+            'Content-Type': 'application/json',
             'Accept': 'application/json'
-        }
+        },
+        body: JSON.stringify(data)
       });
       
       if (response.ok) {
