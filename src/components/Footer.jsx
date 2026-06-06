@@ -35,7 +35,7 @@ const Footer = () => {
   };
 
   return (
-    <footer id="contact" style={{ 
+    <footer id="contact" aria-label="Contact Talib Khan" style={{ 
       padding: '80px 5vw 3rem 5vw', 
       borderTop: '1px solid rgba(255, 255, 255, 0.05)',
       position: 'relative',
@@ -210,7 +210,7 @@ const Footer = () => {
               key={index} 
               href={item.link} 
               target="_blank" 
-              rel="noreferrer"
+              rel="noopener noreferrer"
               style={{
                 color: 'var(--text-secondary)',
                 transition: 'all 0.3s ease'
@@ -232,7 +232,7 @@ const Footer = () => {
 
       <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '2rem' }}>
         <p>© {new Date().getFullYear()} All rights reserved.</p>
-        <p>Built with ❤️ by <a href="https://github.com/talibuilds" target="_blank" rel="noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'underline', textDecorationColor: 'var(--accent)', textUnderlineOffset: '4px' }}>Talibuilds</a></p>
+        <p>Built with ❤️ by <a href="https://github.com/talibuilds" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'underline', textDecorationColor: 'var(--accent)', textUnderlineOffset: '4px' }}>Talibuilds</a></p>
       </div>
     </footer>
   );

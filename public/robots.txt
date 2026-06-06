@@ -1,0 +1,11 @@
+# robots.txt for talibuilds.vercel.app
+# Allow all crawlers to index all pages
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://talibuilds.vercel.app/sitemap.xml
+
+# Disallow admin/api routes from indexing
+Disallow: /api/

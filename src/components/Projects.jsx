@@ -79,13 +79,13 @@ const ProjectCard = ({ project, index }) => {
         <h3 style={{ fontSize: '1.8rem', color: 'var(--text-primary)', fontWeight: 600 }}>{project.name}</h3>
         <div style={{ display: 'flex', gap: '1rem' }}>
           {project.live && (
-            <a href={project.live} target="_blank" rel="noreferrer" className="interactive" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}
+            <a href={project.live} target="_blank" rel="noopener noreferrer" aria-label={`Live demo of ${project.name}`} className="interactive" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}
                onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
                onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
               <ExternalLink size={24} />
             </a>
           )}
-          <a href={project.link} target="_blank" rel="noreferrer" className="interactive" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}
+          <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`GitHub repository for ${project.name}`} className="interactive" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}
              onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
              onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
             <FaGithub size={24} />
@@ -117,7 +117,7 @@ const ProjectCard = ({ project, index }) => {
 
 const Projects = () => {
   return (
-    <section id="projects" style={{ padding: '100px 5vw', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+    <section id="projects" aria-label="Projects by Talib Khan" style={{ padding: '100px 5vw', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}

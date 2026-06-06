@@ -26,7 +26,7 @@ const skills = [
 
 const About = () => {
   return (
-    <section id="about" style={{ minHeight: '100vh', padding: '100px 5vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <section id="about" aria-label="About Talib Khan — Skills and Experience" style={{ minHeight: '100vh', padding: '100px 5vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

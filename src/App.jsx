@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <InsectTrailBackground />
-      <main style={{ position: 'relative', zIndex: 10 }}>
+      <main aria-label="Talib Khan — Full Stack Developer Portfolio" style={{ position: 'relative', zIndex: 10 }}>
         <Hero />
         <About />
         <Projects />

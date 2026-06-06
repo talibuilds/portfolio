@@ -26,7 +26,7 @@ const AbstractGraphic = () => {
 
 const Hero = () => {
   return (
-    <section id="hero" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+    <section id="hero" aria-label="Hero — Talib Khan Full Stack Developer" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
       
       {/* 3D Background */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, opacity: 0.6 }}>
