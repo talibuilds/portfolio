@@ -1,26 +1,114 @@
-import React from 'react';
+import React, { useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import { Float, MeshDistortMaterial, Sphere, Stars } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
-const AbstractGraphic = () => {
+const SpaceTimeGrid = () => {
+  const mass1Ref = useRef();
+  const mass2Ref = useRef();
+  
+  const { planeGeo, lineGeo } = useMemo(() => {
+    const divisions = 60;
+    const geo = new THREE.PlaneGeometry(40, 40, divisions, divisions);
+    geo.rotateX(-Math.PI / 2); // Lay flat
+    
+    // Create custom line segments to remove diagonal triangles
+    const edges = new THREE.BufferGeometry();
+    const indices = [];
+    
+    // Horizontal lines
+    for (let y = 0; y <= divisions; y++) {
+      for (let x = 0; x < divisions; x++) {
+        const i1 = y * (divisions + 1) + x;
+        indices.push(i1, i1 + 1);
+      }
+    }
+    // Vertical lines
+    for (let x = 0; x <= divisions; x++) {
+      for (let y = 0; y < divisions; y++) {
+        const i1 = y * (divisions + 1) + x;
+        const i2 = (y + 1) * (divisions + 1) + x;
+        indices.push(i1, i2);
+      }
+    }
+    edges.setAttribute('position', geo.attributes.position); // Share vertex buffer!
+    edges.setIndex(indices);
+    
+    return { planeGeo: geo, lineGeo: edges };
+  }, []);
+  
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    
+    // Orbital mechanics: Barycenter physics. 
+    // The Sun wobbles slightly in exact opposition to the Earth's orbit.
+    const earthAngle = t * 0.8;
+    const sunWobbleRadius = 0.6; // Sun's reaction to Earth
+    const earthOrbitRadius = 8;
+    
+    // Sun position (opposite to Earth)
+    const m1x = Math.sin(earthAngle + Math.PI) * sunWobbleRadius; 
+    const m1z = Math.cos(earthAngle + Math.PI) * sunWobbleRadius;
+    
+    // Earth position
+    const m2x = Math.sin(earthAngle) * earthOrbitRadius;
+    const m2z = Math.cos(earthAngle) * earthOrbitRadius;
+
+    const positions = planeGeo.attributes.position;
+    for (let i = 0; i < positions.count; i++) {
+      const x = positions.getX(i);
+      const z = positions.getZ(i);
+      
+      const dist1 = Math.sqrt((x - m1x)**2 + (z - m1z)**2);
+      const dist2 = Math.sqrt((x - m2x)**2 + (z - m2z)**2);
+      
+      let y = 0;
+      // Sun gravity well (deep and wide)
+      if (dist1 < 12) y += -5.0 * Math.exp(-dist1 * dist1 / 10);
+      // Earth gravity well (smaller)
+      if (dist2 < 6) y += -1.5 * Math.exp(-dist2 * dist2 / 3);
+      
+      // Subtle background ripple to make space feel alive
+      y += Math.sin(x * 0.5 + t) * 0.05 + Math.cos(z * 0.5 + t) * 0.05;
+      
+      positions.setY(i, y);
+    }
+    positions.needsUpdate = true;
+    
+    // Update spheres to sink perfectly into their own gravity wells
+    // We add an offset equal to roughly 80% of their radius so they look like they are physically resting *in* the fabric curve
+    if (mass1Ref.current) {
+      const d12 = Math.sqrt((m1x - m2x)**2 + (m1z - m2z)**2);
+      let bottomOfWell1 = -5.0 - 1.5 * Math.exp(-d12 * d12 / 3);
+      mass1Ref.current.position.set(m1x, bottomOfWell1 + 1.0, m1z); // Sun radius is 1.5
+    }
+    if (mass2Ref.current) {
+      const d21 = Math.sqrt((m2x - m1x)**2 + (m2z - m1z)**2);
+      let bottomOfWell2 = -1.5 - 5.0 * Math.exp(-d21 * d21 / 10);
+      mass2Ref.current.position.set(m2x, bottomOfWell2 + 0.3, m2z); // Earth radius is 0.5
+    }
+  });
+
   return (
-    <>
-      <Stars radius={50} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
-      <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
-        <Sphere args={[1, 64, 64]} scale={1.8}>
-          <MeshDistortMaterial
-            color="#d4af37"
-            attach="material"
-            distort={0.4}
-            speed={1.5}
-            roughness={0.2}
-            metalness={0.9}
-          />
-        </Sphere>
-      </Float>
-    </>
+    <group position={[0, 0.5, -12]} rotation={[0.4, 0, 0]}>
+      {/* The Rectangular Space-Time Fabric (No diagonals) */}
+      <lineSegments geometry={lineGeo}>
+        <lineBasicMaterial color="#ffffff" transparent opacity={0.15} />
+      </lineSegments>
+      
+      {/* Sun (Heavy, Glowing Center) */}
+      <mesh ref={mass1Ref}>
+        <sphereGeometry args={[1.5, 32, 32]} />
+        <meshStandardMaterial color="#ffcc00" emissive="#ff6600" emissiveIntensity={2} roughness={0.2} metalness={0.8} />
+      </mesh>
+      
+      {/* Earth (Smaller, Blue/Green Orbiting) */}
+      <mesh ref={mass2Ref}>
+        <sphereGeometry args={[0.5, 32, 32]} />
+        <meshStandardMaterial color="#00aaff" emissive="#004488" emissiveIntensity={0.8} roughness={0.6} metalness={0.2} />
+      </mesh>
+    </group>
   );
 };
 
@@ -34,7 +122,7 @@ const Hero = () => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" />
           <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#d4af37" />
-          <AbstractGraphic />
+          <SpaceTimeGrid />
         </Canvas>
       </div>
 
@@ -83,7 +171,7 @@ const Hero = () => {
           I build things that are fast, sharp, and actually enjoyable to use. From the backend logic to the pixel on screen.
         </p>
         
-        <div style={{ marginTop: '3rem', display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
+        <div style={{ marginTop: '6.5rem', display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
           <a href="#projects" style={{ padding: '1rem 2.5rem', background: 'var(--text-primary)', color: 'var(--bg-color)', borderRadius: '30px', fontWeight: 600, transition: 'all 0.3s' }}
              onMouseEnter={(e) => { e.target.style.background = 'var(--accent)'; e.target.style.transform = 'translateY(-3px)'; }}
              onMouseLeave={(e) => { e.target.style.background = 'var(--text-primary)'; e.target.style.transform = 'translateY(0)'; }}

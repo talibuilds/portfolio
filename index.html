@@ -114,6 +114,11 @@
     </script>
   </head>
   <body>
+    <!-- Critical inline styles: force black background BEFORE any JS/React loads -->
+    <style>
+      html, body, #root { background: #000000 !important; }
+      #root { min-height: 100vh; }
+    </style>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 
