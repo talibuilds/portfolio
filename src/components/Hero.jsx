@@ -159,26 +159,32 @@ const Hero = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        style={{ zIndex: 10, textAlign: 'center', marginTop: '5vh', padding: '0 20px' }}
+        style={{ zIndex: 10, textAlign: 'center', marginTop: '-10vh', padding: '0 20px', pointerEvents: 'none' }}
       >
-        <p style={{ fontSize: '1rem', color: 'var(--accent)', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '1.5rem', fontWeight: 600 }}>
+        <p style={{ fontSize: 'clamp(0.8rem, 2vw, 1rem)', color: 'var(--accent)', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '1.5rem', fontWeight: 600 }}>
           Welcome to the Future
         </p>
-        <h1 style={{ fontSize: 'clamp(4rem, 8vw, 7rem)', fontWeight: 800, letterSpacing: '-2px', color: 'var(--text-primary)', lineHeight: 1 }}>
+        <h1 style={{ fontSize: 'clamp(3rem, 8vw, 7rem)', fontWeight: 800, letterSpacing: '-2px', color: 'var(--text-primary)', lineHeight: 1 }}>
           Talib Khan<span style={{ color: 'var(--accent)' }}>.</span>
         </h1>
-        <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', fontWeight: 300, letterSpacing: '1px', marginTop: '1.5rem', maxWidth: '600px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
+        <p style={{ fontSize: 'clamp(1rem, 3vw, 1.2rem)', color: 'var(--text-secondary)', fontWeight: 300, letterSpacing: '1px', marginTop: '1.5rem', maxWidth: '600px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
           I build things that are fast, sharp, and actually enjoyable to use. From the backend logic to the pixel on screen.
         </p>
-        
-        <div style={{ marginTop: '6.5rem', display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
-          <a href="#projects" style={{ padding: '1rem 2.5rem', background: 'var(--text-primary)', color: 'var(--bg-color)', borderRadius: '30px', fontWeight: 600, transition: 'all 0.3s' }}
-             onMouseEnter={(e) => { e.target.style.background = 'var(--accent)'; e.target.style.transform = 'translateY(-3px)'; }}
-             onMouseLeave={(e) => { e.target.style.background = 'var(--text-primary)'; e.target.style.transform = 'translateY(0)'; }}
-          >
-            View Projects
-          </a>
-        </div>
+      </motion.div>
+
+      {/* Action Button - Pinned to bottom to avoid overlapping 3D canvas */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        style={{ position: 'absolute', bottom: '12vh', zIndex: 15 }}
+      >
+        <a href="#projects" style={{ padding: '1rem 2.5rem', background: 'var(--text-primary)', color: 'var(--bg-color)', borderRadius: '30px', fontWeight: 600, transition: 'all 0.3s', display: 'inline-block' }}
+           onMouseEnter={(e) => { e.target.style.background = 'var(--accent)'; e.target.style.transform = 'translateY(-3px)'; }}
+           onMouseLeave={(e) => { e.target.style.background = 'var(--text-primary)'; e.target.style.transform = 'translateY(0)'; }}
+        >
+          View Projects
+        </a>
       </motion.div>
 
       <motion.a 
