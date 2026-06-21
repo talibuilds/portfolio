@@ -396,12 +396,17 @@ function useImagePreloader(urls) {
   return { progress, loaded };
 }
 
-function LoaderCard({ loadProgress, isLoaded, onEnter, audio }) {
+function LoaderCard({ loadProgress, isLoaded, onEnter, onSkip, audio }) {
   const handleEnter = useCallback(() => {
     if (!isLoaded) return;
     if (audio) audio.play().catch((err) => console.warn('Audio playback failed:', err));
     onEnter();
   }, [onEnter, audio, isLoaded]);
+
+  const handleSkip = useCallback(() => {
+    if (audio) audio.play().catch((err) => console.warn('Audio playback failed:', err));
+    onSkip();
+  }, [onSkip, audio]);
 
   return (
     <motion.div
@@ -470,30 +475,58 @@ function LoaderCard({ loadProgress, isLoaded, onEnter, audio }) {
         transition={{ delay: 1.2, duration: 0.8 }}
         style={{ color: '#aaaaaa', fontSize: '0.9rem', lineHeight: 1.7, margin: 0, maxWidth: '380px' }}
       >
-        Experience an epic 30-second flight descending into the solar system to reach my portfolio.
+        The world is a simulation where every choice writes a new line of code.
       </motion.p>
-      <motion.button
+      <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.4, duration: 0.6 }}
-        onClick={handleEnter}
-        disabled={!isLoaded}
-        whileHover={isLoaded ? { scale: 1.06, boxShadow: '0 0 40px rgba(212, 175, 55, 0.6)' } : {}}
-        whileTap={isLoaded ? { scale: 0.95 } : {}}
-        style={{
-          marginTop: '0.6rem', padding: '14px 40px',
-          background: isLoaded ? 'linear-gradient(135deg, #d4af37 0%, #b8962e 50%, #d4af37 100%)' : '#333',
-          backgroundSize: '200% 200%',
-          color: isLoaded ? '#030303' : '#888', border: 'none', borderRadius: '32px',
-          fontSize: '0.95rem', fontWeight: 700, letterSpacing: '1.5px',
-          cursor: isLoaded ? 'pointer' : 'wait',
-          boxShadow: isLoaded ? '0 0 24px rgba(212, 175, 55, 0.35)' : 'none',
-          fontFamily: 'Outfit, sans-serif', textTransform: 'uppercase',
-          transition: 'background 0.3s ease, color 0.3s ease'
-        }}
+        style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '0.6rem', flexWrap: 'wrap', justifyContent: 'center' }}
       >
-        {isLoaded ? 'Enter Experience' : `Loading Universe... ${Math.round(loadProgress)}%`}
-      </motion.button>
+        <motion.button
+          onClick={handleEnter}
+          disabled={!isLoaded}
+          whileHover={isLoaded ? { scale: 1.06, boxShadow: '0 0 40px rgba(212, 175, 55, 0.6)' } : {}}
+          whileTap={isLoaded ? { scale: 0.95 } : {}}
+          style={{
+            padding: '14px 32px',
+            background: isLoaded ? 'linear-gradient(135deg, #d4af37 0%, #b8962e 50%, #d4af37 100%)' : '#333',
+            backgroundSize: '200% 200%',
+            color: isLoaded ? '#030303' : '#888', border: 'none', borderRadius: '32px',
+            fontSize: '0.9rem', fontWeight: 700, letterSpacing: '1.5px',
+            cursor: isLoaded ? 'pointer' : 'wait',
+            boxShadow: isLoaded ? '0 0 24px rgba(212, 175, 55, 0.35)' : 'none',
+            fontFamily: 'Outfit, sans-serif', textTransform: 'uppercase',
+            transition: 'background 0.3s ease, color 0.3s ease'
+          }}
+        >
+          {isLoaded ? 'Plug into Simulation' : `Loading Universe... ${Math.round(loadProgress)}%`}
+        </motion.button>
+        {isLoaded && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            onClick={handleSkip}
+            whileHover={{ scale: 1.05, borderColor: 'rgba(255, 255, 255, 0.5)' }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              padding: '14px 24px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              backdropFilter: 'blur(8px)',
+              color: '#888', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '32px',
+              fontSize: '0.82rem', fontWeight: 500, letterSpacing: '1px',
+              cursor: 'pointer',
+              fontFamily: 'Outfit, sans-serif', textTransform: 'uppercase',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = '#ccc'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = '#888'; }}
+          >
+            Skip & Enter
+          </motion.button>
+        )}
+      </motion.div>
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -623,6 +656,7 @@ const SpaceIntro = ({ onEnter, audio }) => {
               loadProgress={loadProgress}
               isLoaded={texturesLoaded}
               onEnter={handleStartWarp}
+              onSkip={handleSkip}
               audio={audio}
             />
           </motion.div>
