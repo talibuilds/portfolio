@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 import InsectTrailBackground from './components/InsectTrailBackground';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -56,20 +57,22 @@ function App() {
   }, [appPhase]);
 
   return (
-    <AnimatePresence mode="wait">
-      {(appPhase === 'intro' || appPhase === 'video') && (
-        <SpaceIntro
-          key="intro"
-          onEnter={(skipAll) => {
-            if (skipAll === true) {
-              setAppPhase('portfolio');
-            } else {
-              setAppPhase('video');
-            }
-          }}
-          audio={audio}
-        />
-      )}
+    <>
+      <Analytics />
+      <AnimatePresence mode="wait">
+        {(appPhase === 'intro' || appPhase === 'video') && (
+          <SpaceIntro
+            key="intro"
+            onEnter={(skipAll) => {
+              if (skipAll === true) {
+                setAppPhase('portfolio');
+              } else {
+                setAppPhase('video');
+              }
+            }}
+            audio={audio}
+          />
+        )}
 
       {/* Pre-mount the video so it is ready instantly with zero loading delay */}
       {(appPhase === 'intro' || appPhase === 'video') && (
@@ -134,7 +137,8 @@ function App() {
           </main>
         </motion.div>
       )}
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   );
 }
 
