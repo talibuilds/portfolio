@@ -41,11 +41,12 @@ const projectsList = [
     tags: ['Python', 'Selenium', 'Automation']
   },
   {
-    name: 'Pong Game',
-    description: 'A classic retro Pong game implementation showcasing game loop logic and collision detection.',
-    language: 'Python',
-    link: 'https://github.com/talibuilds/pong-game',
-    tags: ['Python', 'Game Dev', 'Retro']
+    name: 'Removo',
+    description: 'Premium AI background removal tool featuring zero-halo edge cleaning, 4K upscaling, and a custom hybrid architecture.',
+    language: 'Python / JS',
+    link: 'https://github.com/talibuilds/removo',
+    live: 'https://bgremovo.vercel.app',
+    tags: ['FastAPI', 'AI', 'Hugging Face', 'Vercel']
   }
 ];
 
