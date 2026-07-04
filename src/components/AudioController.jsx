@@ -66,8 +66,8 @@ const AudioController = ({ audio }) => {
       onMouseLeave={handleMouseLeave}
       style={{
         position: 'fixed',
-        top: '20px',
-        right: '20px',
+        bottom: '30px',
+        left: '30px',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
