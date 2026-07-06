@@ -25,7 +25,7 @@ const Hero = () => {
       </div>
 
       {/* Main Content Layout */}
-      <div style={{
+      <div className="hero-content" style={{
         position: 'relative',
         zIndex: 10,
         width: '100%',
@@ -40,6 +40,7 @@ const Hero = () => {
 
         {/* Left Column (Text) */}
         <motion.div
+          className="hero-text-container"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -70,7 +71,7 @@ const Hero = () => {
             <span style={{ color: 'var(--accent)' }}>Khan.</span>
           </h1>
 
-          <p style={{ 
+          <p className="hero-desc" style={{ 
             fontSize: '1.1rem', 
             color: 'var(--text-secondary)', 
             fontWeight: 400, 
@@ -86,7 +87,7 @@ const Hero = () => {
           </p>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
+          <div className="hero-buttons" style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
             <a href="#projects" style={{
               padding: '0.9rem 2.5rem',
               background: 'var(--accent)',

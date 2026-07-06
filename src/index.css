@@ -86,7 +86,85 @@ section {
   }
   
   section {
-    padding: 60px 5vw;
+    padding: 80px 5vw !important;
+  }
+
+  .hero-content {
+    padding: 0 5vw !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    margin-top: 15vh !important;
+  }
+
+  .hero-text-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 0 auto !important;
+  }
+
+  .hero-desc {
+    padding-left: 0 !important;
+    border-left: none !important;
+    text-align: center !important;
+    margin: 0 auto 2rem auto !important;
+  }
+
+  .hero-buttons {
+    justify-content: center !important;
+    gap: 1.5rem !important;
+  }
+
+  .project-card {
+    flex-direction: column !important;
+    height: auto !important;
+    position: relative !important;
+    top: auto !important;
+    margin-bottom: 3rem !important;
+  }
+
+  .project-image-container {
+    height: 250px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .project-content-container {
+    padding: 2rem !important;
+  }
+
+  .project-content-container h3 {
+    font-size: 1.8rem !important;
+  }
+
+  .project-links {
+    gap: 0.8rem !important;
+  }
+
+  .navbar-container {
+    padding: 1.5rem 5vw !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .nav-links-container {
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+
+  .about-ide-content {
+    padding: 2rem 1rem !important;
+  }
+
+  .footer-container {
+    padding: 60px 5vw 2rem 5vw !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    text-align: center !important;
   }
 }
 

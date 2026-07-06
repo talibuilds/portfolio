@@ -90,6 +90,7 @@ const Projects = () => {
         {projectsList.map((project, index) => (
           <div 
             key={index}
+            className="project-card"
             style={{
               position: 'sticky',
               top: `calc(15vh + ${index * 30}px)`, // Each card stacks slightly below the top of the previous one
@@ -104,7 +105,7 @@ const Projects = () => {
             }}
           >
             {/* Left: Image Preview */}
-            <div style={{ 
+            <div className="project-image-container" style={{ 
               flex: '1', 
               position: 'relative',
               borderRight: '1px solid rgba(255,255,255,0.05)',
@@ -123,7 +124,7 @@ const Projects = () => {
             </div>
 
             {/* Right: Content */}
-            <div style={{ 
+            <div className="project-content-container" style={{ 
               flex: '1', 
               padding: '4rem', 
               display: 'flex', 
@@ -131,7 +132,7 @@ const Projects = () => {
               justifyContent: 'center' 
             }}>
               
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <h3 style={{ 
                   fontSize: '2.5rem', 
                   color: 'var(--text-primary)', 
@@ -142,7 +143,7 @@ const Projects = () => {
                 </h3>
 
                 {/* Links directly beside the title */}
-                <div style={{ display: 'flex', gap: '1.2rem' }}>
+                <div className="project-links" style={{ display: 'flex', gap: '1.2rem' }}>
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer" 
                        style={{ color: 'var(--accent)', transition: 'all 0.3s ease' }}

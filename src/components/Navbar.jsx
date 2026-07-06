@@ -6,6 +6,7 @@ const Navbar = () => {
 
   return (
     <motion.nav
+      className="navbar-container"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -24,7 +25,7 @@ const Navbar = () => {
       }}
     >
       {/* Center Links */}
-      <div style={{
+      <div className="nav-links-container" style={{
         display: 'flex',
         gap: '2.5rem',
         alignItems: 'center'

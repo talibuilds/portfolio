@@ -74,7 +74,7 @@ const About = () => {
             </div>
 
             {/* Code Content */}
-            <div style={{ padding: '3rem 1.5rem', display: 'flex', overflowX: 'auto' }}>
+            <div className="about-ide-content" style={{ padding: '3rem 1.5rem', display: 'flex', overflowX: 'auto' }}>
               {/* Line Numbers */}
               <div style={{
                 paddingRight: '2rem',
