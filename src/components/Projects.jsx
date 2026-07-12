@@ -86,7 +86,7 @@ const Projects = () => {
       </motion.div>
 
       {/* Sticky Stacking Cards Container */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '10vh' }}>
+      <div style={{ maxWidth: '1350px', margin: '0 auto', paddingBottom: '10vh' }}>
         {projectsList.map((project, index) => (
           <div 
             key={index}
@@ -94,8 +94,8 @@ const Projects = () => {
             data-swarm-shape="curly"
             style={{
               position: 'sticky',
-              top: `calc(15vh + ${index * 30}px)`, // Each card stacks slightly below the top of the previous one
-              height: '600px', // Fixed height ensures the left pane (600px wide) is a perfect 1:1 square
+              top: `calc(8vh + ${index * 25}px)`, // Adjusted stacking offset to prevent pushing bottom out of screen
+              height: 'min(680px, 80vh)', // Bounded height prevents bottom clipping on smaller screens
               backgroundColor: '#0a0a0a',
               border: '1px solid rgba(255,255,255,0.05)',
               borderRadius: '24px',
@@ -127,7 +127,7 @@ const Projects = () => {
             {/* Right: Content */}
             <div className="project-content-container" style={{ 
               flex: '1', 
-              padding: '4rem', 
+              padding: 'clamp(2rem, 4vw, 4rem)', 
               display: 'flex', 
               flexDirection: 'column', 
               justifyContent: 'center' 
