@@ -8,6 +8,7 @@ import {
   SiNextdotjs, SiTailwindcss, SiFastapi, 
   SiPostgresql, SiMongodb, SiPrisma, SiFigma, SiCanva 
 } from 'react-icons/si';
+import InteractiveSwarm from './InteractiveSwarm';
 
 const skillCategories = [
   {
@@ -56,12 +57,17 @@ const skillCategories = [
 const Skills = () => {
   return (
     <section id="skills" aria-label="Technical Skills" style={{ 
-      padding: '60px 6rem 120px 6rem', // Matches About padding logic
+      padding: '60px 6rem 120px 6rem',
       background: 'var(--bg-color)',
       position: 'relative',
-      zIndex: 10
+      zIndex: 10,
+      overflow: 'hidden'
     }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+      
+      {/* Localized Dot Animation Background */}
+      <InteractiveSwarm />
+
+      <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 2 }}>
         
         <motion.div
           initial={{ opacity: 0, y: 30 }}

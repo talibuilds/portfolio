@@ -91,6 +91,7 @@ const Projects = () => {
           <div 
             key={index}
             className="project-card"
+            data-swarm-shape="curly"
             style={{
               position: 'sticky',
               top: `calc(15vh + ${index * 30}px)`, // Each card stacks slightly below the top of the previous one

@@ -92,6 +92,7 @@ const Footer = () => {
           </motion.div>
         ) : (
           <motion.form 
+            data-swarm-shape="curly"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}

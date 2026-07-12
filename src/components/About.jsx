@@ -43,7 +43,7 @@ const About = () => {
           </h2>
 
           {/* IDE Window Mockup */}
-          <div style={{
+          <div data-swarm-shape="curly" style={{
             maxWidth: '900px', // Restricts the width to remove empty space on the right
             margin: '0 auto', // Centers the IDE window
             background: '#1e1e1e', // VS Code dark background
