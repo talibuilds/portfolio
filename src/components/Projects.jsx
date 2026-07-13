@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
 const projectsList = [
@@ -10,7 +10,7 @@ const projectsList = [
     language: 'JavaScript / React',
     link: 'https://github.com/talibuilds/Portfolio',
     tags: ['React', 'Vite', 'Framer Motion', 'CSS'],
-    image: '/personal_portfolio.jpg'
+    image: '/personal_portfolio.png'
   },
   {
     name: 'StudySphere',
@@ -59,138 +59,176 @@ const projectsList = [
 ];
 
 const Projects = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    if (isHovering) return;
+
+    const timer = setInterval(() => {
+      setHoveredIndex((prev) => (prev + 1) % projectsList.length);
+    }, 5000); // 10 seconds
+
+    return () => clearInterval(timer);
+  }, [isHovering]);
+
   return (
-    <section id="projects" aria-label="Projects by Talib Khan" style={{ 
+    <section id="projects" aria-label="Projects by Talib Khan" style={{
       padding: '120px 6rem',
-      background: 'var(--bg-color)',
+      background: 'transparent',
       position: 'relative',
-      zIndex: 10
+      zIndex: 10,
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center'
     }}>
-      
-      {/* Section Header */}
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        style={{ maxWidth: '1400px', margin: '0 auto', marginBottom: '8rem', textAlign: 'center' }}
+        style={{ marginBottom: '4rem' }}
       >
-        <h2 style={{ 
-          fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', 
-          fontWeight: 800, 
-          color: 'var(--text-primary)',
-          fontFamily: 'Outfit, sans-serif'
+        <h2 style={{
+          fontSize: 'clamp(2rem, 4vw, 3rem)',
+          fontWeight: 800,
+          color: '#fff',
+          fontFamily: 'Outfit, sans-serif',
+          textTransform: 'uppercase',
+          letterSpacing: '2px'
         }}>
-          Selected <span style={{ color: 'var(--accent)' }}>Works</span>
+          Selected <span style={{ color: 'var(--text-secondary)' }}>Works</span>
         </h2>
       </motion.div>
 
-      {/* Sticky Stacking Cards Container */}
-      <div style={{ maxWidth: '1350px', margin: '0 auto', paddingBottom: '10vh' }}>
-        {projectsList.map((project, index) => (
-          <div 
-            key={index}
-            className="project-card"
-            data-swarm-shape="curly"
-            style={{
-              position: 'sticky',
-              top: `calc(8vh + ${index * 25}px)`, // Adjusted stacking offset to prevent pushing bottom out of screen
-              height: 'min(680px, 80vh)', // Bounded height prevents bottom clipping on smaller screens
-              backgroundColor: '#0a0a0a',
-              border: '1px solid rgba(255,255,255,0.05)',
-              borderRadius: '24px',
-              marginBottom: '60vh', // Creates the scrolling distance before the next card hits
-              display: 'flex',
-              overflow: 'hidden',
-              boxShadow: '0 -20px 50px rgba(0,0,0,0.8)',
-            }}
-          >
-            {/* Left: Image Preview */}
-            <div className="project-image-container" style={{ 
-              flex: '1', 
-              position: 'relative',
-              borderRight: '1px solid rgba(255,255,255,0.05)',
-              overflow: 'hidden' // Removed padding and flex centering
-            }}>
-              <img 
-                src={project.image} 
-                alt={`${project.name} preview`} 
+      <div
+        style={{ position: 'relative', display: 'flex', gap: '4rem' }}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+
+        {/* Project List */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {projectsList.map((project, index) => {
+            const isHovered = hoveredIndex === index;
+
+            return (
+              <div
+                key={index}
+                onMouseEnter={() => setHoveredIndex(index)}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover', // Will perfectly fit the 1:1 frame
-                  objectPosition: 'center',
+                  padding: '1.5rem 0',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  transition: 'all 0.4s ease',
+                  opacity: !isHovered ? 0.4 : 1
                 }}
-              />
-            </div>
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <h3 style={{
+                    fontSize: '2rem',
+                    fontWeight: 700,
+                    color: '#fff',
+                    fontFamily: 'Outfit, sans-serif',
+                    transition: 'all 0.4s ease',
+                    transform: isHovered ? 'translateX(15px)' : 'translateX(0)'
+                  }}>
+                    {project.name}
+                  </h3>
+                  <div style={{
+                    display: 'flex',
+                    gap: '1rem',
+                    transition: 'all 0.4s ease',
+                    transform: isHovered ? 'translateX(15px)' : 'translateX(0)',
+                    opacity: isHovered ? 1 : 0.6
+                  }}>
+                    <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
+                      {project.tags.slice(0, 3).join(' • ')}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Right: Content */}
-            <div className="project-content-container" style={{ 
-              flex: '1', 
-              padding: 'clamp(2rem, 4vw, 4rem)', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              justifyContent: 'center' 
-            }}>
-              
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-                <h3 style={{ 
-                  fontSize: '2.5rem', 
-                  color: 'var(--text-primary)', 
-                  fontWeight: 700,
-                  fontFamily: 'Outfit, sans-serif'
+                <div style={{
+                  display: 'flex',
+                  gap: '1.5rem',
+                  alignItems: 'center',
+                  opacity: isHovered ? 1 : 0,
+                  transform: isHovered ? 'translateX(0)' : 'translateX(-15px)',
+                  transition: 'all 0.4s ease'
                 }}>
-                  {project.name}
-                </h3>
-
-                {/* Links directly beside the title */}
-                <div className="project-links" style={{ display: 'flex', gap: '1.2rem' }}>
                   {project.live && (
-                    <a href={project.live} target="_blank" rel="noopener noreferrer" 
-                       style={{ color: 'var(--accent)', transition: 'all 0.3s ease' }}
-                       onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-                       onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-                      <ExternalLink size={28} />
+                    <a href={project.live} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
+                      <ArrowUpRight size={28} />
                     </a>
                   )}
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" 
-                     style={{ color: 'var(--text-secondary)', transition: 'all 0.3s ease' }}
-                     onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                     onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
                     <FaGithub size={28} />
                   </a>
                 </div>
               </div>
+            )
+          })}
+        </div>
 
-              <p style={{ 
-                color: 'var(--text-secondary)', 
-                fontSize: '1.1rem', 
-                lineHeight: 1.8, 
-                marginBottom: '3rem',
-                fontFamily: 'Inter, sans-serif'
-              }}>
-                {project.description}
-              </p>
-
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', marginTop: 'auto' }}>
-                {project.tags.map((tag, i) => (
-                  <span key={i} style={{ 
-                    fontSize: '0.85rem', 
-                    padding: '0.5rem 1.2rem', 
-                    border: '1px solid rgba(210, 180, 140, 0.2)', 
-                    color: 'var(--accent)',
-                    borderRadius: '30px',
-                    fontFamily: 'Inter, sans-serif',
-                    fontWeight: 500
-                  }}>
-                    {tag}
-                  </span>
-                ))}
+        {/* Image Preview Area */}
+        <div className="desktop-only" style={{
+          width: '500px',
+          height: '600px',
+          position: 'sticky',
+          top: '20vh',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          background: 'rgba(255,255,255,0.02)',
+          border: '1px solid rgba(255,255,255,0.05)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={hoveredIndex}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              <div style={{ height: '350px', width: '100%', overflow: 'hidden' }}>
+                <img
+                  src={projectsList[hoveredIndex].image}
+                  alt={projectsList[hoveredIndex].name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    background: '#0a0a0a'
+                  }}
+                />
               </div>
+              <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <h4 style={{ fontSize: '1.5rem', color: '#fff', fontFamily: 'Outfit, sans-serif', marginBottom: '1rem' }}>
+                  {projectsList[hoveredIndex].name}
+                </h4>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, fontFamily: 'Inter, sans-serif' }}>
+                  {projectsList[hoveredIndex].description}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-            </div>
-          </div>
-        ))}
       </div>
 
     </section>

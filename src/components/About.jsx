@@ -19,9 +19,10 @@ const About = () => {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      background: 'var(--bg-color)',
+      background: 'transparent',
       position: 'relative',
-      zIndex: 10
+      zIndex: 10,
+      minHeight: '100vh'
     }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
 

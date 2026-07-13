@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
 import Hero from './components/Hero';
-import Navbar from './components/Navbar';
+import SideNav from './components/SideNav';
 import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
@@ -14,11 +14,12 @@ function App() {
     <>
       <Analytics />
       
-      <div style={{ position: 'relative', zIndex: 10 }}>
-        <Navbar />
+      <div className="app-layout" style={{ position: 'relative', zIndex: 10 }}>
+        <SideNav />
         
         {/* The actual content */}
         <main
+          className="main-content"
           aria-label="Talib Khan — Full Stack Developer Portfolio"
         >
           <Hero />

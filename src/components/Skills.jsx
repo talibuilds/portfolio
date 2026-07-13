@@ -58,10 +58,14 @@ const Skills = () => {
   return (
     <section id="skills" aria-label="Technical Skills" style={{ 
       padding: '60px 6rem 120px 6rem',
-      background: 'var(--bg-color)',
+      background: 'transparent',
       position: 'relative',
       zIndex: 10,
-      overflow: 'hidden'
+      overflow: 'hidden',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center'
     }}>
       
       {/* Localized Dot Animation Background */}

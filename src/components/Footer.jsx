@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Mail, ChevronUp } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Footer = () => {
   const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+  const formRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,6 +13,9 @@ const Footer = () => {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
+
+    // Ensure the animation plays for at least 2 seconds
+    const startTime = Date.now();
 
     try {
       const response = await fetch(`/api/contact`, {
@@ -23,6 +27,11 @@ const Footer = () => {
         body: JSON.stringify(data)
       });
 
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 2000 - elapsed);
+
+      await new Promise(resolve => setTimeout(resolve, remaining));
+
       if (response.ok) {
         setStatus('success');
       } else {
@@ -30,8 +39,101 @@ const Footer = () => {
       }
     } catch (error) {
       console.error(error);
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 2000 - elapsed);
+      await new Promise(resolve => setTimeout(resolve, remaining));
       setStatus('error');
     }
+  };
+
+  // On error, show message briefly then redirect to Gmail
+  useEffect(() => {
+    if (status === 'error') {
+      const timer = setTimeout(() => {
+        const subject = encodeURIComponent('Hey Talib — Let\'s Connect');
+        const body = encodeURIComponent('Hi Talib,\n\nI wanted to reach out regarding...');
+        window.open(
+          `https://mail.google.com/mail/?view=cm&to=talibslab@gmail.com&su=${subject}&body=${body}`,
+          '_blank'
+        );
+        // Reset form after redirect
+        setTimeout(() => setStatus('idle'), 500);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
+  // Inline animated TK logo for the button
+  const SubmitButtonContent = () => {
+    if (status === 'submitting') {
+      return (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          {/* Spinning TK mini logo */}
+          <motion.svg
+            viewBox="0 0 1000 1000"
+            style={{ width: 22, height: 22 }}
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
+          >
+            <polygon points="210,270 690,270 600,350 520,350 520,910 430,910 430,350 210,350" fill="#000" />
+            <polygon points="492.5,574.4 932.5,234.4 987.5,305.6 547.5,645.6" fill="#000" />
+            <polygon points="547.5,574.4 987.5,914.4 932.5,985.6 492.5,645.6" fill="#000" />
+          </motion.svg>
+          <span style={{ letterSpacing: '2px' }}>TRANSMITTING...</span>
+        </motion.div>
+      );
+    }
+
+    if (status === 'error') {
+      return (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            width: '100%'
+          }}
+        >
+          <span style={{ fontSize: '1rem' }}>✕</span>
+          <span>FAILED — OPENING GMAIL...</span>
+        </motion.div>
+      );
+    }
+
+    if (status === 'success') {
+      return (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            width: '100%'
+          }}
+        >
+          <span style={{ fontSize: '1rem' }}>✓</span>
+          <span>DELIVERED</span>
+        </motion.div>
+      );
+    }
+
+    return 'CONNECT';
   };
 
   return (
@@ -40,7 +142,7 @@ const Footer = () => {
       borderTop: '1px solid rgba(255, 255, 255, 0.05)',
       position: 'relative',
       zIndex: 10,
-      background: 'rgba(0, 0, 0, 0.3)',
+      background: 'transparent',
       overflow: 'hidden'
     }}>
       <div style={{
@@ -66,7 +168,7 @@ const Footer = () => {
           </p>
         </motion.div>
 
-        {/* Small Contact Form or Success Message */}
+        {/* Small Contact Form */}
         {status === 'success' ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -81,7 +183,7 @@ const Footer = () => {
               borderRadius: '16px',
               padding: '2rem 1.5rem',
               border: '1px solid var(--accent)',
-              boxShadow: '0 0 20px rgba(212, 175, 55, 0.1)'
+              boxShadow: '0 0 20px rgba(255, 255, 255, 0.05)'
             }}
           >
             <h3 style={{ color: 'var(--accent)', fontSize: '1.2rem', fontFamily: 'Fira Code, monospace' }}>
@@ -93,6 +195,7 @@ const Footer = () => {
           </motion.div>
         ) : (
           <motion.form
+            ref={formRef}
             data-swarm-shape="curly"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -118,6 +221,7 @@ const Footer = () => {
                 name="name"
                 required
                 placeholder="Name"
+                disabled={status === 'submitting'}
                 style={{
                   flex: 1,
                   width: '100%',
@@ -136,6 +240,7 @@ const Footer = () => {
                 name="email"
                 required
                 placeholder="Email"
+                disabled={status === 'submitting'}
                 style={{
                   flex: 1,
                   width: '100%',
@@ -155,6 +260,7 @@ const Footer = () => {
               required
               placeholder="Message"
               rows="3"
+              disabled={status === 'submitting'}
               style={{
                 width: '100%',
                 background: 'rgba(0,0,0,0.2)',
@@ -170,11 +276,15 @@ const Footer = () => {
             />
             <button
               type="submit"
-              disabled={status === 'submitting'}
+              disabled={status === 'submitting' || status === 'error'}
               style={{
                 width: '100%',
                 padding: '0.8rem',
-                background: 'var(--accent)',
+                background: status === 'error'
+                  ? '#e53e3e'
+                  : status === 'success'
+                    ? '#38a169'
+                    : 'var(--accent)',
                 color: '#000',
                 border: 'none',
                 borderRadius: '8px',
@@ -183,13 +293,19 @@ const Footer = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
                 transition: 'all 0.3s ease',
-                cursor: status === 'submitting' ? 'wait' : 'pointer',
-                opacity: status === 'submitting' ? 0.7 : 1
+                cursor: (status === 'submitting' || status === 'error') ? 'wait' : 'pointer',
+                opacity: 1,
+                overflow: 'hidden',
+                position: 'relative',
+                minHeight: '42px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
-              onMouseEnter={(e) => { if (status !== 'submitting') e.currentTarget.style.transform = 'translateY(-2px)' }}
-              onMouseLeave={(e) => { if (status !== 'submitting') e.currentTarget.style.transform = 'translateY(0)' }}
+              onMouseEnter={(e) => { if (status === 'idle') e.currentTarget.style.transform = 'translateY(-2px)' }}
+              onMouseLeave={(e) => { if (status === 'idle') e.currentTarget.style.transform = 'translateY(0)' }}
             >
-              {status === 'submitting' ? 'UPLOADING...' : (status === 'error' ? 'ERROR! TRY AGAIN' : 'CONNECT')}
+              <SubmitButtonContent />
             </button>
           </motion.form>
         )}
@@ -254,20 +370,20 @@ const Footer = () => {
           lineHeight: 0.75,
         }}>
           <h1 style={{
-            fontSize: '29vw', // Adjusted sizing so it doesn't get cut off on the sides
+            fontSize: '18vw', // Adjusted sizing to fit with the new sidebar
             fontWeight: 900,
             margin: 0,
             padding: 0,
             color: '#ffffff',
-            fontFamily: "'Archivo Black', sans-serif", // A much thicker, solid, and bold font
-            letterSpacing: '-1vw', // Adjusted spacing for the new font
+            fontFamily: "'Archivo Black', sans-serif",
+            letterSpacing: '-0.5vw',
             textTransform: 'uppercase',
             display: 'inline-block',
-            // Heavy bottom-weighted shadows for that ambient occlusion / grounded look
             textShadow: '0px 15px 15px rgba(0,0,0,0.6), 0px 40px 40px rgba(0,0,0,0.8), 0px 80px 100px rgba(0,0,0,1)',
             position: 'relative',
             zIndex: 1,
-            transform: 'translateY(1.5vw)' // Brought it up a bit compared to before
+            transform: 'translateY(1.5vw)',
+            width: '100%'
           }}>
             TALIB
           </h1>
@@ -289,3 +405,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
