@@ -6,7 +6,8 @@
   --border-color: rgba(255, 255, 255, 0.08);
   --text-primary: #ffffff;
   --text-secondary: #94a3b8;
-  --accent: #ffffff; /* White accent for starker contrast */
+  --accent: #ffffff;
+  /* White accent for starker contrast */
   --accent-glow: rgba(255, 255, 255, 0.3);
 }
 
@@ -31,7 +32,8 @@
 
 .main-content {
   flex: 1;
-  margin-left: 250px; /* Offset for SideNav */
+  margin-left: 250px;
+  /* Offset for SideNav */
   position: relative;
 }
 
@@ -54,7 +56,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
 }
@@ -85,19 +92,13 @@ section {
   font-family: 'Fira Code', monospace;
 }
 
-/* Custom Scrollbar */
+.mobile-only {
+  display: none !important;
+}
+
+/* Custom Scrollbar - Hidden per request */
 ::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-color);
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  display: none;
 }
 
 /* Responsive Utilities */
@@ -105,11 +106,20 @@ section {
   .desktop-only {
     display: none !important;
   }
-  
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
   .form-row {
     flex-direction: column;
   }
-  
+
   section {
     padding: 80px 5vw !important;
   }
@@ -148,10 +158,24 @@ section {
     margin-bottom: 3rem !important;
   }
 
+  .project-item {
+    opacity: 1 !important;
+  }
+  
+  .project-item .project-actions {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .project-item h3, .project-item div > span {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
   .project-image-container {
     height: 250px !important;
     border-right: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .project-content-container {

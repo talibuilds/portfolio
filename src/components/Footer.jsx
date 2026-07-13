@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Mail, ChevronUp } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import PhysicsText from './PhysicsText';
 
 const Footer = () => {
   const [status, setStatus] = useState('idle'); // idle, submitting, success, error
@@ -369,24 +370,7 @@ const Footer = () => {
           position: 'relative',
           lineHeight: 0.75,
         }}>
-          <h1 style={{
-            fontSize: '18vw', // Adjusted sizing to fit with the new sidebar
-            fontWeight: 900,
-            margin: 0,
-            padding: 0,
-            color: '#ffffff',
-            fontFamily: "'Archivo Black', sans-serif",
-            letterSpacing: '-0.5vw',
-            textTransform: 'uppercase',
-            display: 'inline-block',
-            textShadow: '0px 15px 15px rgba(0,0,0,0.6), 0px 40px 40px rgba(0,0,0,0.8), 0px 80px 100px rgba(0,0,0,1)',
-            position: 'relative',
-            zIndex: 1,
-            transform: 'translateY(1.5vw)',
-            width: '100%'
-          }}>
-            TALIB
-          </h1>
+          <PhysicsText text="TALIB" />
           {/* Subtle gradient overlay to enhance the ground cut-off illusion */}
           <div style={{
             position: 'absolute',

@@ -117,19 +117,26 @@ const Projects = () => {
             return (
               <div
                 key={index}
+                className="project-item"
                 onMouseEnter={() => setHoveredIndex(index)}
                 style={{
                   padding: '1.5rem 0',
                   borderBottom: '1px solid rgba(255,255,255,0.05)',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
+                  flexDirection: 'column',
+                  gap: '1rem',
                   cursor: 'pointer',
                   transition: 'all 0.4s ease',
                   opacity: !isHovered ? 0.4 : 1
                 }}
               >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {/* Mobile Inline Image */}
+                <div className="mobile-only" style={{ width: '100%', height: '200px', borderRadius: '12px', overflow: 'hidden', marginBottom: '1rem' }}>
+                  <img src={project.image} alt={project.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <h3 style={{
                     fontSize: '2rem',
                     fontWeight: 700,
@@ -152,8 +159,8 @@ const Projects = () => {
                     </span>
                   </div>
                 </div>
-
-                <div style={{
+                  
+                <div className="project-actions" style={{
                   display: 'flex',
                   gap: '1.5rem',
                   alignItems: 'center',
@@ -171,8 +178,9 @@ const Projects = () => {
                   </a>
                 </div>
               </div>
-            )
-          })}
+            </div>
+          );
+        })}
         </div>
 
         {/* Image Preview Area */}

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
 import Hero from './components/Hero';
 import SideNav from './components/SideNav';
+import MobileNav from './components/MobileNav';
 import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
@@ -16,6 +17,7 @@ function App() {
       
       <div className="app-layout" style={{ position: 'relative', zIndex: 10 }}>
         <SideNav />
+        <MobileNav />
         
         {/* The actual content */}
         <main

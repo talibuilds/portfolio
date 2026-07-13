@@ -89,7 +89,7 @@ const Hero = () => {
 
           {/* Big Name */}
           <h1 style={{
-            fontSize: 'clamp(5rem, 12vw, 11rem)',
+            fontSize: 'clamp(3rem, 12vw, 11rem)',
             fontWeight: 900,
             letterSpacing: '-3px',
             lineHeight: 1,
