@@ -16,7 +16,7 @@ const projectsList = [
     name: 'StudySphere',
     description: 'A comprehensive study platform for managing tasks, resources, and enhancing learning efficiency. Features robust state management and seamless collaborative environments.',
     language: 'JavaScript / React',
-    link: 'https://github.com/talibuilds/studyshpere',
+    link: 'https://github.com/talibuilds/studysphere',
     live: 'https://studyspheres.vercel.app/',
     tags: ['React', 'Education', 'Web App'],
     image: '/studysphere_ui.jpg'
@@ -137,50 +137,50 @@ const Projects = () => {
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <h3 style={{
-                    fontSize: '2rem',
-                    fontWeight: 700,
-                    color: '#fff',
-                    fontFamily: 'Outfit, sans-serif',
-                    transition: 'all 0.4s ease',
-                    transform: isHovered ? 'translateX(15px)' : 'translateX(0)'
-                  }}>
-                    {project.name}
-                  </h3>
-                  <div style={{
+                    <h3 style={{
+                      fontSize: '2rem',
+                      fontWeight: 700,
+                      color: '#fff',
+                      fontFamily: 'Outfit, sans-serif',
+                      transition: 'all 0.4s ease',
+                      transform: isHovered ? 'translateX(15px)' : 'translateX(0)'
+                    }}>
+                      {project.name}
+                    </h3>
+                    <div style={{
+                      display: 'flex',
+                      gap: '1rem',
+                      transition: 'all 0.4s ease',
+                      transform: isHovered ? 'translateX(15px)' : 'translateX(0)',
+                      opacity: isHovered ? 1 : 0.6
+                    }}>
+                      <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
+                        {project.tags.slice(0, 3).join(' • ')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="project-actions" style={{
                     display: 'flex',
-                    gap: '1rem',
-                    transition: 'all 0.4s ease',
-                    transform: isHovered ? 'translateX(15px)' : 'translateX(0)',
-                    opacity: isHovered ? 1 : 0.6
+                    gap: '1.5rem',
+                    alignItems: 'center',
+                    opacity: isHovered ? 1 : 0,
+                    transform: isHovered ? 'translateX(0)' : 'translateX(-15px)',
+                    transition: 'all 0.4s ease'
                   }}>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontFamily: 'Inter, sans-serif' }}>
-                      {project.tags.slice(0, 3).join(' • ')}
-                    </span>
+                    {project.live && (
+                      <a href={project.live} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
+                        <ArrowUpRight size={28} />
+                      </a>
+                    )}
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
+                      <FaGithub size={28} />
+                    </a>
                   </div>
                 </div>
-                  
-                <div className="project-actions" style={{
-                  display: 'flex',
-                  gap: '1.5rem',
-                  alignItems: 'center',
-                  opacity: isHovered ? 1 : 0,
-                  transform: isHovered ? 'translateX(0)' : 'translateX(-15px)',
-                  transition: 'all 0.4s ease'
-                }}>
-                  {project.live && (
-                    <a href={project.live} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
-                      <ArrowUpRight size={28} />
-                    </a>
-                  )}
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
-                    <FaGithub size={28} />
-                  </a>
-                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         </div>
 
         {/* Image Preview Area */}
