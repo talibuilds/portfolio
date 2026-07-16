@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import CanvasSnake from './CanvasSnake';
 import TKLogo from './TKLogo';
+import ViewCounter from './ViewCounter';
 
 const navItems = [
   { id: 'hero', label: 'Home' },
@@ -45,19 +46,27 @@ const SideNav = () => {
           position: 'absolute', 
           top: '2.5rem', 
           left: '4rem', 
-          cursor: 'pointer',
-          zIndex: 10
-        }}
-        onClick={() => {
-          const subject = encodeURIComponent('Hey Talib — Let\'s Connect');
-          const body = encodeURIComponent('Hi Talib,\n\nI wanted to reach out regarding...');
-          window.open(
-            `https://mail.google.com/mail/?view=cm&to=talibslab@gmail.com&su=${subject}&body=${body}`,
-            '_blank'
-          );
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '6px'
         }}
       >
-        <TKLogo />
+        <div
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            const subject = encodeURIComponent('Hey Talib — Let\'s Connect');
+            const body = encodeURIComponent('Hi Talib,\n\nI wanted to reach out regarding...');
+            window.open(
+              `https://mail.google.com/mail/?view=cm&to=talibslab@gmail.com&su=${subject}&body=${body}`,
+              '_blank'
+            );
+          }}
+        >
+          <TKLogo />
+        </div>
+        <ViewCounter />
       </div>
 
       <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative' }}>
