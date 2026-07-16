@@ -1,44 +1,81 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
+
+const SESSION_KEY = 'portfolio_view_counted';
+
+// Ease-out cubic for that fast-start, slow-end counting feel
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
 
 const ViewCounter = () => {
-  const [views, setViews] = useState(null);
-  const [hasIncremented, setHasIncremented] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const prevViews = useRef(null);
+  const [displayCount, setDisplayCount] = useState(0);
+  const [targetCount, setTargetCount] = useState(null);
+  const [isDone, setIsDone] = useState(false);
+  const rafRef = useRef(null);
 
-  useEffect(() => {
-    const incrementView = async () => {
-      try {
-        const res = await fetch('/api/views', { method: 'POST' });
-        const data = await res.json();
-        setViews(data.views);
-        setHasIncremented(true);
-        prevViews.current = data.views;
-      } catch {
-        // Fallback — show base count
-        setViews(100);
-        setHasIncremented(true);
+  // Animate from 0 → target
+  const animateCount = useCallback((target) => {
+    const duration = Math.min(2000, 800 + target * 3); // Dynamic duration, caps at 2s
+    const startTime = performance.now();
+
+    const tick = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeOutCubic(progress);
+      const current = Math.round(easedProgress * target);
+
+      setDisplayCount(current);
+
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        setDisplayCount(target);
+        setIsDone(true);
       }
     };
 
-    incrementView();
+    rafRef.current = requestAnimationFrame(tick);
   }, []);
 
-  // Subtle pulse when the number first appears
   useEffect(() => {
-    if (hasIncremented) {
-      setIsAnimating(true);
-      const t = setTimeout(() => setIsAnimating(false), 600);
-      return () => clearTimeout(t);
+    const fetchAndCount = async () => {
+      const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
+
+      try {
+        if (alreadyCounted) {
+          // Already counted this session — just GET the current count
+          const res = await fetch('/api/views', { method: 'GET' });
+          const data = await res.json();
+          setTargetCount(data.views);
+        } else {
+          // First visit this session — POST to increment
+          const res = await fetch('/api/views', { method: 'POST' });
+          const data = await res.json();
+          setTargetCount(data.views);
+          sessionStorage.setItem(SESSION_KEY, '1');
+        }
+      } catch {
+        setTargetCount(100);
+      }
+    };
+
+    fetchAndCount();
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Start counting animation once we have the target
+  useEffect(() => {
+    if (targetCount !== null) {
+      animateCount(targetCount);
     }
-  }, [hasIncremented]);
+  }, [targetCount, animateCount]);
 
   // Format number with commas
-  const formatNumber = (num) => {
-    if (num === null) return '---';
-    return num.toLocaleString();
-  };
+  const formatNumber = (num) => num.toLocaleString();
 
   return (
     <>
@@ -79,20 +116,20 @@ const ViewCounter = () => {
           stroke-width: 1.5;
           stroke-linecap: round;
           stroke-linejoin: round;
+          transition: stroke 0.3s ease;
         }
 
         .view-eye-pupil {
           fill: rgba(255, 255, 255, 0.5);
+          transition: fill 0.3s ease;
         }
 
         .view-counter:hover .view-eye-path {
           stroke: rgba(255, 255, 255, 0.7);
-          transition: stroke 0.3s ease;
         }
 
         .view-counter:hover .view-eye-pupil {
           fill: rgba(255, 255, 255, 0.85);
-          transition: fill 0.3s ease;
         }
 
         .view-count-text {
@@ -103,33 +140,32 @@ const ViewCounter = () => {
           letter-spacing: 0.5px;
           line-height: 1;
           transition: color 0.3s ease;
+          min-width: 28px;
         }
 
         .view-counter:hover .view-count-text {
           color: rgba(255, 255, 255, 0.7);
         }
 
-        .view-pulse {
-          animation: viewPulse 600ms ease-out;
+        .view-count-done {
+          animation: viewSettle 400ms ease-out;
         }
 
-        @keyframes viewPulse {
-          0%   { transform: scale(1); }
-          40%  { transform: scale(1.15); }
+        @keyframes viewSettle {
+          0%   { transform: scale(1.12); }
+          60%  { transform: scale(0.96); }
           100% { transform: scale(1); }
         }
       `}</style>
 
-      <div className="view-counter" title={`${formatNumber(views)} views`}>
-        {/* Eye Icon — SVG so it blends with the TK logo aesthetic */}
-        <div className={`view-eye ${isAnimating ? 'view-pulse' : ''}`}>
+      <div className="view-counter" title={`${formatNumber(displayCount)} views`}>
+        {/* Eye Icon */}
+        <div className="view-eye">
           <svg viewBox="0 0 24 24">
-            {/* Eye outline */}
             <path
               className="view-eye-path"
               d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"
             />
-            {/* Pupil */}
             <circle
               className="view-eye-pupil"
               cx="12"
@@ -139,16 +175,10 @@ const ViewCounter = () => {
           </svg>
         </div>
 
-        {/* Count */}
-        <motion.span
-          className="view-count-text"
-          key={views}
-          initial={{ opacity: 0, y: 3 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-        >
-          {formatNumber(views)}
-        </motion.span>
+        {/* Animated Count */}
+        <span className={`view-count-text ${isDone ? 'view-count-done' : ''}`}>
+          {formatNumber(displayCount)}
+        </span>
       </div>
     </>
   );
