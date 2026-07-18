@@ -208,7 +208,7 @@ const PhysicsText = ({ text = 'TALIB' }) => {
         <div style={{
           display: 'flex',
           justifyContent: 'center',
-          gap: '4vw', // Extra spacing between letters
+          gap: windowSize.width < 768 ? '2vw' : '4vw', // Extra spacing between letters
           width: '100%',
           opacity: 0
         }}>
@@ -217,7 +217,7 @@ const PhysicsText = ({ text = 'TALIB' }) => {
               key={`static-${i}`}
               ref={el => letterRefs.current[i] = el}
               style={{
-                fontSize: '18vw',
+                fontSize: windowSize.width < 768 ? '14vw' : '18vw',
                 fontWeight: 900,
                 margin: 0,
                 padding: 0,
@@ -247,7 +247,7 @@ const PhysicsText = ({ text = 'TALIB' }) => {
             left: 0,
             width: width,
             height: height,
-            fontSize: '18vw',
+            fontSize: windowSize.width < 768 ? '14vw' : '18vw',
             fontWeight: 900,
             margin: 0,
             padding: 0,

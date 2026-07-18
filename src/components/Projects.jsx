@@ -10,7 +10,8 @@ const projectsList = [
     language: 'JavaScript / React',
     link: 'https://github.com/talibuilds/Portfolio',
     tags: ['React', 'Vite', 'Framer Motion', 'CSS'],
-    image: '/personal_portfolio.png'
+    image: '/portfolio.gif',
+    duration: 6000
   },
   {
     name: 'StudySphere',
@@ -19,7 +20,8 @@ const projectsList = [
     link: 'https://github.com/talibuilds/studysphere',
     live: 'https://studyspheres.vercel.app/',
     tags: ['React', 'Education', 'Web App'],
-    image: '/studysphere_ui.jpg'
+    image: '/studysphere.gif',
+    duration: 13000
   },
   {
     name: 'Planetto',
@@ -28,15 +30,18 @@ const projectsList = [
     link: 'https://github.com/talibuilds/Planetto',
     live: 'https://expo.dev/accounts/talibuilds/projects/Planetto/builds/d9c526cd-7eca-46df-9ef2-d1c188160616',
     tags: ['React Native', 'Mobile', 'Productivity'],
-    image: '/planetto_ui.jpg'
+    image: '/planetto.gif',
+    duration: 11000
   },
   {
-    name: 'CivicEye',
-    description: 'A zero-friction civic platform using computer vision to detect, classify, and prioritize urban hazards in real-time. Designed for massive scalability and immediate response routing.',
-    language: 'TypeScript',
-    link: 'https://github.com/talibuilds/civikeye',
-    tags: ['Computer Vision', 'TypeScript', 'Real-time'],
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80'
+    name: 'Off-Mind',
+    description: 'A mindfulness and productivity platform designed to help users declutter their thoughts, manage stress, and stay organized through an intuitive interface.',
+    language: 'JavaScript / React',
+    link: 'https://github.com/talibuilds/Off-Mind',
+    live: 'https://off-mind.vercel.app/',
+    tags: ['React', 'Next.js', 'Productivity', 'Mindfulness'],
+    image: '/offmind.gif',
+    duration: 10000
   },
   {
     name: 'QRomize',
@@ -45,7 +50,8 @@ const projectsList = [
     link: 'https://github.com/talibuilds/QRomize',
     live: 'https://qromize.vercel.app',
     tags: ['React', 'Vite', 'Tailwind', 'QR Code'],
-    image: '/qromize_ui.png'
+    image: '/qromize.gif',
+    duration: 12000
   },
   {
     name: 'Removo',
@@ -54,7 +60,8 @@ const projectsList = [
     link: 'https://github.com/talibuilds/removo',
     live: 'https://bgremovo.vercel.app',
     tags: ['FastAPI', 'AI', 'Hugging Face', 'Vercel'],
-    image: '/removo_ui.png'
+    image: '/removo.gif',
+    duration: 13000
   }
 ];
 
@@ -65,12 +72,15 @@ const Projects = () => {
   useEffect(() => {
     if (isHovering) return;
 
-    const timer = setInterval(() => {
-      setHoveredIndex((prev) => (prev + 1) % projectsList.length);
-    }, 5000); // 10 seconds
+    // Use specific project duration if available, fallback to 10 seconds
+    const currentDuration = projectsList[hoveredIndex].duration || 10000;
 
-    return () => clearInterval(timer);
-  }, [isHovering]);
+    const timer = setTimeout(() => {
+      setHoveredIndex((prev) => (prev + 1) % projectsList.length);
+    }, currentDuration);
+
+    return () => clearTimeout(timer);
+  }, [isHovering, hoveredIndex]);
 
   return (
     <section id="projects" aria-label="Projects by Talib Khan" style={{
@@ -104,13 +114,14 @@ const Projects = () => {
       </motion.div>
 
       <div
-        style={{ position: 'relative', display: 'flex', gap: '4rem' }}
+        className="projects-flex-container"
+        style={{ position: 'relative', display: 'flex', gap: '4rem', alignItems: 'flex-start' }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
 
         {/* Project List */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ flex: '1 1 40%', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {projectsList.map((project, index) => {
             const isHovered = hoveredIndex === index;
 
@@ -131,14 +142,14 @@ const Projects = () => {
                 }}
               >
                 {/* Mobile Inline Image */}
-                <div className="mobile-only" style={{ width: '100%', height: '200px', borderRadius: '12px', overflow: 'hidden', marginBottom: '1rem' }}>
+                <div className="mobile-only" style={{ width: '100%', aspectRatio: '16/9', borderRadius: '12px', overflow: 'hidden', marginBottom: '1rem' }}>
                   <img src={project.image} alt={project.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <h3 style={{
-                      fontSize: '2rem',
+                      fontSize: 'clamp(1.5rem, 2vw, 2rem)',
                       fontWeight: 700,
                       color: '#fff',
                       fontFamily: 'Outfit, sans-serif',
@@ -162,7 +173,7 @@ const Projects = () => {
 
                   <div className="project-actions" style={{
                     display: 'flex',
-                    gap: '1.5rem',
+                    gap: '1rem',
                     alignItems: 'center',
                     opacity: isHovered ? 1 : 0,
                     transform: isHovered ? 'translateX(0)' : 'translateX(-15px)',
@@ -170,11 +181,11 @@ const Projects = () => {
                   }}>
                     {project.live && (
                       <a href={project.live} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
-                        <ArrowUpRight size={28} />
+                        <ArrowUpRight size={24} />
                       </a>
                     )}
                     <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>
-                      <FaGithub size={28} />
+                      <FaGithub size={24} />
                     </a>
                   </div>
                 </div>
@@ -185,10 +196,10 @@ const Projects = () => {
 
         {/* Image Preview Area */}
         <div className="desktop-only" style={{
-          width: '500px',
-          height: '600px',
+          flex: '1 1 60%',
+          maxWidth: '850px',
           position: 'sticky',
-          top: '20vh',
+          top: '15vh',
           borderRadius: '16px',
           overflow: 'hidden',
           background: 'rgba(255,255,255,0.02)',
@@ -201,18 +212,18 @@ const Projects = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={hoveredIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
               style={{
                 width: '100%',
-                height: '100%',
                 display: 'flex',
                 flexDirection: 'column'
               }}
             >
-              <div style={{ height: '350px', width: '100%', overflow: 'hidden' }}>
+              {/* 16:9 Image Container */}
+              <div style={{ width: '100%', aspectRatio: '16/9', overflow: 'hidden' }}>
                 <img
                   src={projectsList[hoveredIndex].image}
                   alt={projectsList[hoveredIndex].name}
@@ -225,8 +236,8 @@ const Projects = () => {
                   }}
                 />
               </div>
-              <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <h4 style={{ fontSize: '1.5rem', color: '#fff', fontFamily: 'Outfit, sans-serif', marginBottom: '1rem' }}>
+              <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+                <h4 style={{ fontSize: '1.5rem', color: '#fff', fontFamily: 'Outfit, sans-serif', marginBottom: '0.75rem' }}>
                   {projectsList[hoveredIndex].name}
                 </h4>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, fontFamily: 'Inter, sans-serif' }}>

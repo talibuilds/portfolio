@@ -450,7 +450,7 @@ function LoaderCard({ loadProgress, isLoaded, onEnter, onSkip, audio }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          style={{ fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 800, letterSpacing: '2px', color: '#ffffff', margin: 0 }}
+          style={{ fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 800, letterSpacing: 'clamp(6px, 1vw, 10px)', color: '#ffffff', margin: 0 }}
         >
           TALIB KHAN<span style={{ color: '#d4af37' }}>.</span>
         </motion.h1>

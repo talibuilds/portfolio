@@ -215,6 +215,11 @@ section {
     gap: 1rem !important;
     text-align: center !important;
   }
+
+  .projects-flex-container {
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
 }
 
 @media (min-width: 769px) {
