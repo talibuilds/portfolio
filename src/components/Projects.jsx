@@ -35,7 +35,7 @@ const projectsList = [
   },
   {
     name: 'Off-Mind',
-    description: 'A mindfulness and productivity platform designed to help users declutter their thoughts, manage stress, and stay organized through an intuitive interface.',
+    description: 'Off-Mind is an offline AI model to summarize your long texts and generate a short simple summary, keywords and flashcards completely 100% offline.',
     language: 'JavaScript / React',
     link: 'https://github.com/talibuilds/Off-Mind',
     live: 'https://off-mind.vercel.app/',
