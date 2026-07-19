@@ -62,6 +62,16 @@ const projectsList = [
     tags: ['FastAPI', 'AI', 'Hugging Face', 'Vercel'],
     image: '/removo.gif',
     duration: 13000
+  },
+  {
+    name: 'FAZE',
+    description: 'A paid media marketplace where users unlock crystal-clear images from watermarked previews using an in-app coin wallet. Architected a secure S3 proxy layer (no direct CDN links ever exposed) with SHA-256 hashing to prevent content theft — built with React Native, Node.js, Express, and Prisma/PostgreSQL.',
+    language: 'React Native / Node.js',
+    link: 'https://github.com/talibuilds/FAZE',
+    live: 'https://expo.dev/accounts/talibuilds/projects/faze-mobile/builds/e6734ae4-b87e-4cf9-97f4-5dfb96e6d469',
+    tags: ['React Native', 'Node.js', 'PostgreSQL', 'Express'],
+    image: '/faze.gif',
+    duration: 26000
   }
 ];
 
